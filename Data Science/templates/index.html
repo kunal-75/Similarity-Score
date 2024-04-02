@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science</title>
+</head>
+<body>
+    <input type="text" id="text1" placeholder="Enter text 1">
+    <input type="text" id="text2" placeholder="Enter text 2">
+    <button onclick="submitForm()">Submit</button>
+    <br><br>
+    <input type="text" id="similarity_score" placeholder="Similarity Score" readonly>
+    
+    <script>
+        function submitForm() {
+            // Get input values
+            var text1 = document.getElementById("text1").value;
+            var text2 = document.getElementById("text2").value;
+            
+            // Send POST request to backend
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text1: text1, text2: text2})
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update similarity score placeholder
+                document.getElementById("similarity_score").value = data["similarity score"];
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
